@@ -83,15 +83,15 @@ class WorkoutController extends Controller
         $perPage = $request->input('per_page', 10);
         $workouts = $query->paginate($perPage);
 
-        return response()->json([
-            'data' => WorkoutResource::collection($workouts->items()),
-            'meta' => [
-                'current_page' => $workouts->currentPage(),
-                'last_page' => $workouts->lastPage(),
-                'per_page' => $workouts->perPage(),
-                'total' => $workouts->total(),
-            ]
-        ]);
+        return response()->json(
+            WorkoutResource::collection($workouts->items()),
+            // 'meta' => [
+            //     'current_page' => $workouts->currentPage(),
+            //     'last_page' => $workouts->lastPage(),
+            //     'per_page' => $workouts->perPage(),
+            //     'total' => $workouts->total(),
+            // ]
+        );
     }
 
 
@@ -99,22 +99,21 @@ class WorkoutController extends Controller
      * @OA\Post(
      *     path="/api/workouts",
      *     tags={"Workouts"},
-     *     summary="Cria um novo treino com séries e exercícios",
+     *     summary="Cria um novo treino com séries",
      *     security={{"bearerAuth":{}}},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"date", "sets"},
+     *             required={"date", "exercise_id", "sets"},
      *             @OA\Property(property="date", type="string", format="date", example="2025-07-30"),
+     *             @OA\Property(property="exercise_id", type="integer", example=1),
      *             @OA\Property(property="notes", type="string", example="Treino de peito"),
      *             @OA\Property(
      *                 property="sets",
      *                 type="array",
      *                 @OA\Items(
-     *                     @OA\Property(property="exercise_id", type="integer", example=1),
      *                     @OA\Property(property="weight", type="number", format="float", example=80.0),
-     *                     @OA\Property(property="repetitions", type="integer", example=10),
-     *                     @OA\Property(property="order", type="integer", example=1)
+     *                     @OA\Property(property="repetitions", type="integer", example=10)
      *                 )
      *             )
      *         )
@@ -132,7 +131,7 @@ class WorkoutController extends Controller
 
         return response()->json([
             'message' => 'Treino criado com sucesso',
-            'workout' => $workout->load('sets.exercise')
+            'workout' => $workout->load(['sets', 'exercise'])
         ]);
     }
 
@@ -182,17 +181,16 @@ class WorkoutController extends Controller
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"date", "sets"},
+     *             required={"date", "exercise_id", "sets"},
      *             @OA\Property(property="date", type="string", format="date", example="2025-07-30"),
+     *             @OA\Property(property="exercise_id", type="integer", example=2),
      *             @OA\Property(property="notes", type="string", example="Treino atualizado"),
      *             @OA\Property(
      *                 property="sets",
      *                 type="array",
      *                 @OA\Items(
-     *                     @OA\Property(property="exercise_id", type="integer", example=2),
      *                     @OA\Property(property="weight", type="number", format="float", example=60.0),
-     *                     @OA\Property(property="repetitions", type="integer", example=12),
-     *                     @OA\Property(property="order", type="integer", example=1)
+     *                     @OA\Property(property="repetitions", type="integer", example=12)
      *                 )
      *             )
      *         )

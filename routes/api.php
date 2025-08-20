@@ -5,9 +5,6 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\WorkoutController;
 
-Route::post('/auth/register', fn() => response()->json(['ok' => true]));
-
-
 Route::prefix('auth')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login']);
@@ -21,5 +18,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/workouts/{id}', [WorkoutController::class, 'update']);
     Route::delete('/workouts/{id}', [WorkoutController::class, 'destroy']);
     Route::get('/workouts/stats', [WorkoutController::class, 'stats']);
-    Route::apiResource('exercises', ExerciseController::class);
+    Route::apiResource(name: 'exercises', ExerciseController::class);
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::delete('/account', [AuthController::class, 'deleteAccount']);
 });

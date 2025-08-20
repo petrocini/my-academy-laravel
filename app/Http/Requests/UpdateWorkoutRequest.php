@@ -14,13 +14,12 @@ class UpdateWorkoutRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'date' => 'required|date',
+            'exercise_id' => 'sometimes|required|exists:exercises,id',
+            'date' => 'sometimes|required|date',
             'notes' => 'nullable|string',
-            'sets' => 'required|array|min:1',
-            'sets.*.exercise_id' => 'required|exists:exercises,id',
-            'sets.*.weight' => 'nullable|numeric',
-            'sets.*.repetitions' => 'nullable|integer',
-            'sets.*.order' => 'nullable|integer|min:1',
+            'sets' => 'sometimes|required|array|min:1',
+            'sets.*.weight' => 'required|numeric|min:0.01',
+            'sets.*.repetitions' => 'required|integer|min:1',
         ];
     }
 }

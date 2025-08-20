@@ -31,4 +31,16 @@ class AuthService
 
         return $user->createToken('mobile-token')->plainTextToken;
     }
+
+    public function logout(User $user): void
+    {
+        $user->currentAccessToken()->delete();
+    }
+
+    public function deleteAccount(User $user): void
+    {
+        $user->tokens()->delete();
+
+        $user->delete();
+    }
 }

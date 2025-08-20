@@ -24,6 +24,20 @@ class AuthController extends Controller
         return response()->json(['token' => $token]);
     }
 
+    public function logout(Request $request): JsonResponse
+    {
+        $this->authService->logout($request->user());
+
+        return response()->json(['message' => 'Logout realizado com sucesso.']);
+    }
+
+    public function deleteAccount(Request $request): JsonResponse
+    {
+        $this->authService->deleteAccount($request->user());
+
+        return response()->json(['message' => 'Conta excluída com sucesso.']);
+    }
+
     public function me(Request $request): JsonResponse
     {
         return response()->json($request->user());

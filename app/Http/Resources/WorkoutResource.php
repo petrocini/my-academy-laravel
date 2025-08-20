@@ -12,16 +12,15 @@ class WorkoutResource extends JsonResource
             'id' => $this->id,
             'date' => $this->date,
             'notes' => $this->notes,
+            'exercise' => [
+                'id' => $this->exercise->id ?? null,
+                'name' => $this->exercise->name ?? null,
+                'category' => $this->exercise->category ?? null,
+            ],
             'sets' => $this->sets->map(fn($set) => [
                 'id' => $set->id,
-                'exercise' => [
-                    'id' => $set->exercise->id,
-                    'name' => $set->exercise->name,
-                    'category' => $set->exercise->category,
-                ],
                 'weight' => $set->weight,
-                'repetitions' => $set->repetitions,
-                'order' => $set->order
+                'repetitions' => $set->repetitions
             ])
         ];
     }

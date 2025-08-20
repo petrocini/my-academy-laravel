@@ -1,0 +1,480 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "My Workout API",
+        "description": "Documentação da API de treino e exercícios",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://my-default-host.com",
+            "description": "API Laravel Docker"
+        }
+    ],
+    "paths": {
+        "/api/exercises": {
+            "get": {
+                "tags": [
+                    "Exercises"
+                ],
+                "summary": "Lista todos os exercícios cadastrados",
+                "operationId": "21bd87ce16a1f663c1699749f963152d",
+                "responses": {
+                    "200": {
+                        "description": "Lista de exercícios"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Exercises"
+                ],
+                "summary": "Cria um novo exercício",
+                "operationId": "1eac3da7158aade43d25b9ee98b2fb6f",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Supino reto"
+                                    },
+                                    "category": {
+                                        "type": "string",
+                                        "example": "Peito"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Exercício criado com sucesso"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/exercises/{id}": {
+            "get": {
+                "tags": [
+                    "Exercises"
+                ],
+                "summary": "Visualiza um exercício específico",
+                "operationId": "f3924e81949e4458f8638b614ca1940b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do exercício",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Exercício retornado com sucesso"
+                    },
+                    "404": {
+                        "description": "Exercício não encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Exercises"
+                ],
+                "summary": "Atualiza um exercício existente",
+                "operationId": "418e68635cbc3c0aa804759b6e9d17c3",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do exercício",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Supino inclinado"
+                                    },
+                                    "category": {
+                                        "type": "string",
+                                        "example": "Peito"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Exercício atualizado com sucesso"
+                    },
+                    "404": {
+                        "description": "Exercício não encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Exercises"
+                ],
+                "summary": "Remove um exercício",
+                "operationId": "65ee987b7f187994058cc17700eef2d9",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do exercício",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Exercício removido com sucesso"
+                    },
+                    "404": {
+                        "description": "Exercício não encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/workouts": {
+            "get": {
+                "tags": [
+                    "Workouts"
+                ],
+                "summary": "Lista os treinos do usuário com filtros e paginação",
+                "operationId": "2f13658620d34073a1b33ece9c6a854e",
+                "parameters": [
+                    {
+                        "name": "date_start",
+                        "in": "query",
+                        "description": "Data inicial do treino",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "date_end",
+                        "in": "query",
+                        "description": "Data final do treino",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "category",
+                        "in": "query",
+                        "description": "Categoria do exercício",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Quantidade de resultados por página",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 10
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de treinos filtrada com sucesso"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Workouts"
+                ],
+                "summary": "Cria um novo treino com séries e exercícios",
+                "operationId": "f6d51271df5b4cc4d2bc5119a013178e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "date",
+                                    "sets"
+                                ],
+                                "properties": {
+                                    "date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-07-30"
+                                    },
+                                    "notes": {
+                                        "type": "string",
+                                        "example": "Treino de peito"
+                                    },
+                                    "sets": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "exercise_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "weight": {
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": 80
+                                                },
+                                                "repetitions": {
+                                                    "type": "integer",
+                                                    "example": 10
+                                                },
+                                                "order": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Treino criado com sucesso"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/workouts/{id}": {
+            "get": {
+                "tags": [
+                    "Workouts"
+                ],
+                "summary": "Retorna os detalhes de um treino específico",
+                "operationId": "5065642d269336104318bfadc3bb0752",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do treino",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detalhes do treino retornado com sucesso"
+                    },
+                    "404": {
+                        "description": "Treino não encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Workouts"
+                ],
+                "summary": "Atualiza um treino existente",
+                "operationId": "2eeaee2d262b0c57d3cd587793722155",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do treino a ser atualizado",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "date",
+                                    "sets"
+                                ],
+                                "properties": {
+                                    "date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-07-30"
+                                    },
+                                    "notes": {
+                                        "type": "string",
+                                        "example": "Treino atualizado"
+                                    },
+                                    "sets": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "exercise_id": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                },
+                                                "weight": {
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": 60
+                                                },
+                                                "repetitions": {
+                                                    "type": "integer",
+                                                    "example": 12
+                                                },
+                                                "order": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Treino atualizado com sucesso"
+                    },
+                    "404": {
+                        "description": "Treino não encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Workouts"
+                ],
+                "summary": "Remove um treino do usuário",
+                "operationId": "a03d56a1198815dce09be237f3587c22",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do treino",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Treino removido com sucesso"
+                    },
+                    "404": {
+                        "description": "Treino não encontrado"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Exercises",
+            "description": "Gerenciamento de exercícios"
+        },
+        {
+            "name": "Workouts",
+            "description": "Gerenciamento de treinos"
+        }
+    ]
+}
