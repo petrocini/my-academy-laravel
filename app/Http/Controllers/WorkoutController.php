@@ -239,32 +239,35 @@ class WorkoutController extends Controller
 
     /**
      * @OA\Get(
-     *     path="/api/workouts/stats",
-     *     tags={"Workouts"},
-     *     summary="Retorna estatísticas dos treinos do usuário",
-     *     security={{"bearerAuth":{}}},
-     *     @OA\Response(
-     *         response=200,
-     *         description="Estatísticas retornadas com sucesso",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="total_workouts", type="integer", example=25),
-     *             @OA\Property(
-     *                 property="load_per_exercise",
-     *                 type="array",
-     *                 @OA\Items(
-     *                     @OA\Property(property="exercise_id", type="integer", example=1),
-     *                     @OA\Property(property="exercise_name", type="string", example="Agachamento"),
-     *                     @OA\Property(property="total_load", type="number", format="float", example=1250.5)
-     *                 )
-     *             ),
-     *             @OA\Property(
-     *                 property="weekly_frequency",
-     *                 type="object",
-     *                 additionalProperties=@OA\Schema(type="integer", example=3),
-     *                 example={"2025-07-01": 2, "2025-07-08": 3}
-     *             )
-     *         )
-     *     )
+     * path="/api/workouts/stats",
+     * tags={"Workouts"},
+     * summary="Retorna estatísticas dos treinos do usuário",
+     * security={{"sanctum":{}}},
+     * @OA\Response(
+     * response=200,
+     * description="Estatísticas retornadas com sucesso",
+     * @OA\JsonContent(
+     * @OA\Property(property="total_workouts", type="integer", example=25),
+     * @OA\Property(
+     * property="load_per_exercise",
+     * type="array",
+     * @OA\Items(
+     * @OA\Property(property="exercise_id", type="integer", example=1),
+     * @OA\Property(property="exercise_name", type="string", example="Agachamento"),
+     * @OA\Property(property="total_load", type="number", format="float", example=1250.5)
+     * )
+     * ),
+     * @OA\Property(
+     * property="weekly_frequency",
+     * type="object",
+     * description="Contagem de treinos por semana. A chave é a data do início da semana.",
+     * @OA\AdditionalProperties(
+     * type="integer",
+     * example=3
+     * )
+     * )
+     * )
+     * )
      * )
      */
     public function stats(Request $request): JsonResponse

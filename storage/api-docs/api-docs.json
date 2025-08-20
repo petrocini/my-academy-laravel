@@ -186,6 +186,53 @@
                 ]
             }
         },
+        "/api/exercises/popular": {
+            "get": {
+                "tags": [
+                    "Exercises"
+                ],
+                "summary": "Lista os exercícios mais utilizados pelo usuário",
+                "operationId": "d8908afc59581da3efc708c195754f7d",
+                "responses": {
+                    "200": {
+                        "description": "Lista de exercícios mais utilizados",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "exercise_id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "name": {
+                                                "type": "string",
+                                                "example": "Supino reto"
+                                            },
+                                            "category": {
+                                                "type": "string",
+                                                "example": "Peito"
+                                            },
+                                            "times_used": {
+                                                "type": "integer",
+                                                "example": 15
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/workouts": {
             "get": {
                 "tags": [
@@ -249,7 +296,7 @@
                 "tags": [
                     "Workouts"
                 ],
-                "summary": "Cria um novo treino com séries e exercícios",
+                "summary": "Cria um novo treino com séries",
                 "operationId": "f6d51271df5b4cc4d2bc5119a013178e",
                 "requestBody": {
                     "required": true,
@@ -258,6 +305,7 @@
                             "schema": {
                                 "required": [
                                     "date",
+                                    "exercise_id",
                                     "sets"
                                 ],
                                 "properties": {
@@ -265,6 +313,10 @@
                                         "type": "string",
                                         "format": "date",
                                         "example": "2025-07-30"
+                                    },
+                                    "exercise_id": {
+                                        "type": "integer",
+                                        "example": 1
                                     },
                                     "notes": {
                                         "type": "string",
@@ -274,10 +326,6 @@
                                         "type": "array",
                                         "items": {
                                             "properties": {
-                                                "exercise_id": {
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
                                                 "weight": {
                                                     "type": "number",
                                                     "format": "float",
@@ -286,10 +334,6 @@
                                                 "repetitions": {
                                                     "type": "integer",
                                                     "example": 10
-                                                },
-                                                "order": {
-                                                    "type": "integer",
-                                                    "example": 1
                                                 }
                                             },
                                             "type": "object"
@@ -369,6 +413,7 @@
                             "schema": {
                                 "required": [
                                     "date",
+                                    "exercise_id",
                                     "sets"
                                 ],
                                 "properties": {
@@ -376,6 +421,10 @@
                                         "type": "string",
                                         "format": "date",
                                         "example": "2025-07-30"
+                                    },
+                                    "exercise_id": {
+                                        "type": "integer",
+                                        "example": 2
                                     },
                                     "notes": {
                                         "type": "string",
@@ -385,10 +434,6 @@
                                         "type": "array",
                                         "items": {
                                             "properties": {
-                                                "exercise_id": {
-                                                    "type": "integer",
-                                                    "example": 2
-                                                },
                                                 "weight": {
                                                     "type": "number",
                                                     "format": "float",
@@ -397,10 +442,6 @@
                                                 "repetitions": {
                                                     "type": "integer",
                                                     "example": 12
-                                                },
-                                                "order": {
-                                                    "type": "integer",
-                                                    "example": 1
                                                 }
                                             },
                                             "type": "object"
@@ -454,6 +495,67 @@
                 "security": [
                     {
                         "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/workouts/stats": {
+            "get": {
+                "tags": [
+                    "Workouts"
+                ],
+                "summary": "Retorna estatísticas dos treinos do usuário",
+                "operationId": "f625306092f46f707a007a10662d92f2",
+                "responses": {
+                    "200": {
+                        "description": "Estatísticas retornadas com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "total_workouts": {
+                                            "type": "integer",
+                                            "example": 25
+                                        },
+                                        "load_per_exercise": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "exercise_id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "exercise_name": {
+                                                        "type": "string",
+                                                        "example": "Agachamento"
+                                                    },
+                                                    "total_load": {
+                                                        "type": "number",
+                                                        "format": "float",
+                                                        "example": 1250.5
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "weekly_frequency": {
+                                            "description": "Contagem de treinos por semana. A chave é a data do início da semana.",
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "type": "integer",
+                                                "example": 3
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
                     }
                 ]
             }
